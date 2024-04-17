@@ -1,3 +1,5 @@
+// Sample code for tensor library
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -6,36 +8,28 @@
 #include "tensor_aux.h"
 
 int main(void) {
-  srand(time(NULL));
-  uint ndim = 2;
-  uint shape[] = {3, 2};
+  uint ndim = 3;
+  uint shape[] = {4, 3, 2};
+  int data[4][3][2] = {{{1, 2}, {3, 4}, {5, 6}},
+                       {{7, 8}, {9, 10}, {11, 12}},
+                       {{13, 14}, {15, 16}, {17, 18}},
+                       {{19, 20}, {21, 22}, {23, 24}}};
 
-  // make tensors
-  printf("make tensor of ones: t1\n");
-  tensor *t1 = tensor_ones(ndim, shape);
-  printf("make random tensor: t2\n");
-  tensor *t2 = tensor_rand_int(ndim, shape, 10);
+  // create tensor
+  printf("create tensor\n");
+  tensor *t = tensor_new(ndim, shape, (int *)data);
 
   // print tensor
-  printf("t1: ones\n");
-  tensor_print_int(t1);
-  printf("t2: random\n");
-  tensor_print_int(t2);
-
-  // element wise addition
-  printf("t3 = t1 + t2\n");
-  tensor *t3 = tensor_add(t1, t2);
-  tensor_print_int(t3);
+  printf("print tensor\n");
+  tensor_print(t);
 
   // save tensor
-  // const char *filename = "random.tensor";
-  // printf("save tensor: %s\n", filename);
-  // tensor_save_int(t, filename);
+  const char *filename = "tensor.txt";
+  printf("save tensor: %s\n", filename);
+  tensor_save(t, filename);
 
   // free it
-  tensor_free(t1);
-  tensor_free(t2);
-  tensor_free(t3);
+  tensor_free(t);
 
   return EXIT_SUCCESS;
 }

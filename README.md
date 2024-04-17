@@ -1,5 +1,5 @@
 # Tensor
 
-Simple implementation of *tensor* data structure in C.
+Simple implementation of integer *tensor* in C.
 
 ---
