@@ -1,8 +1,3 @@
-/**
- * @brief Simple implementation of *tensor* data structure in C.
- * @author aurelien.esnard@u-bordeaux.fr, 2024.
- **/
-
 #include <assert.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -17,9 +12,9 @@
 /* *********************************************************** */
 
 struct tensor_s {
-  datatype *data;
-  uint *shape;
-  uint ndim;
+  uint ndim;   /* number of dimensions */
+  int *data;   /* raw data */
+  uint *shape; /* shape of the tensor (array of size ndim) */
 };
 
 typedef struct tensor_s tensor;
@@ -40,7 +35,7 @@ static uint calculate_index(uint ndim, uint *shape, uint *indices) {
   assert(indices);
   uint index = 0;
   uint multiplier = 1;
-  for (uint i = ndim - 1; i >= 0; i--) {
+  for (int i = ndim - 1; i >= 0; i--) {
     index += indices[i] * multiplier;
     multiplier *= shape[i];
   }
@@ -49,7 +44,7 @@ static uint calculate_index(uint ndim, uint *shape, uint *indices) {
 
 /* *********************************************************** */
 
-tensor *tensor_new(uint ndim, uint *shape, datatype *data) {
+tensor *tensor_new(uint ndim, uint *shape, int *data) {
   assert(shape);
   tensor *t = (tensor *)malloc(sizeof(tensor));
   assert(t);
@@ -58,7 +53,7 @@ tensor *tensor_new(uint ndim, uint *shape, datatype *data) {
   assert(t->shape);
   for (uint i = 0; i < ndim; i++) t->shape[i] = shape[i];
   uint size = shape_size(ndim, shape);
-  t->data = (datatype *)malloc(size * sizeof(datatype));
+  t->data = (int *)malloc(size * sizeof(int));
   assert(t->data);
   if (data) {
     for (uint i = 0; i < size; i++) t->data[i] = data[i];
@@ -108,14 +103,14 @@ uint tensor_ndim(tensor *t) {
 
 /* *********************************************************** */
 
-datatype *tensor_data(tensor *t) {
+int *tensor_data(tensor *t) {
   assert(t);
   return t->data;
 }
 
 /* *********************************************************** */
 
-datatype tensor_get_element(tensor *t, uint *indices) {
+int tensor_get_element(tensor *t, uint *indices) {
   assert(t);
   assert(indices);
   uint index = calculate_index(t->ndim, t->shape, indices);
@@ -124,7 +119,7 @@ datatype tensor_get_element(tensor *t, uint *indices) {
 
 /* *********************************************************** */
 
-void tensor_set_element(tensor *t, uint *indices, datatype value) {
+void tensor_set_element(tensor *t, uint *indices, int value) {
   assert(t);
   assert(indices);
   uint index = calculate_index(t->ndim, t->shape, indices);
@@ -191,10 +186,10 @@ tensor *tensor_mul(tensor *t1, tensor *t2) {
 
 /* *********************************************************** */
 
-datatype tensor_sum(tensor *t) {
+int tensor_sum(tensor *t) {
   assert(t);
   uint size = tensor_size(t);
-  datatype sum = 0.0f;
+  int sum = 0.0f;
   for (uint i = 0; i < size; i++) {
     sum += t->data[i];
   }
@@ -203,10 +198,10 @@ datatype tensor_sum(tensor *t) {
 
 /* *********************************************************** */
 
-datatype tensor_max(tensor *t) {
+int tensor_max(tensor *t) {
   assert(t);
   uint size = tensor_size(t);
-  datatype max = t->data[0];
+  int max = t->data[0];
   for (uint i = 1; i < size; i++) {
     max = MAX(max, t->data[i]);
   }
