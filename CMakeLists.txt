@@ -12,6 +12,8 @@ add_executable(sample sample.c)
 target_link_libraries(sample tensor)
 add_executable(tensor_test tensor_test.c)
 target_link_libraries(tensor_test tensor)
+add_executable(bench bench.c)
+target_link_libraries(bench tensor)
 
 # ## tests
 add_test(test_new ./tensor_test "new")
