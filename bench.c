@@ -3,8 +3,8 @@
 
 #include "tensor.h"
 
-#define N 150    // taille dimension
-#define ITER 100 // nombre d'itérations
+#define N 100   // taille dimension
+#define ITER 10 // nombre d'itérations
 
 int
 main ()
