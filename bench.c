@@ -6,28 +6,27 @@
 #define N 100   // taille dimension
 #define ITER 10 // nombre d'itérations
 
-int
-main ()
+int main()
 {
-  uint shape[3] = { N, N, N };
+    uint shape[3] = {N, N, N};
 
-  tensor *A = tensor_ones (3, shape);
-  tensor *B = tensor_ones (3, shape);
+    tensor *A = tensor_ones(3, shape);
+    tensor *B = tensor_ones(3, shape);
 
-  long total_sum = 0;
-  for (int i = 0; i < ITER; i++)
+    long total_sum = 0;
+    for (int i = 0; i < ITER; i++)
     {
-      tensor *C = tensor_add (A, B);
-      tensor *D = tensor_mul (C, A);
-      int s = tensor_sum (D);
-      total_sum += s;
-      tensor_free (C);
-      tensor_free (D);
+        tensor *C = tensor_add(A, B);
+        tensor *D = tensor_mul(C, A);
+        int s = tensor_sum(D);
+        total_sum += s;
+        tensor_free(C);
+        tensor_free(D);
     }
-  printf ("Total sum: %ld\n", total_sum);
+    printf("Total sum: %ld\n", total_sum);
 
-  tensor_free (A);
-  tensor_free (B);
+    tensor_free(A);
+    tensor_free(B);
 
-  return 0;
+    return 0;
 }
